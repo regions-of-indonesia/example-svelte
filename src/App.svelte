@@ -4,6 +4,10 @@
   import { create } from "@regions-of-indonesia/client";
   import type { Region } from "@regions-of-indonesia/types";
 
+  import Label from "./components/Label.svelte";
+  import Select from "./components/Select.svelte";
+  import RegionSelectOptions from "./components/RegionSelectOptions.svelte";
+
   const client = create();
 
   let provinces: Region[] = [];
@@ -68,36 +72,36 @@
 </script>
 
 <div class="container max-w-screen-lg mx-auto p-4 md:p-6 lg:p-8 xl:p-10">
-  <h1 class="mb-4 lg:mb-6 text-center text-lg lg:text-xl font-mono">Regions of Indonesia</h1>
+  <h1 class="mb-4 lg:mb-6 text-center text-lg md:text-xl 2xl:text-2xl font-mono font-bold">Regions of Indonesia</h1>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
-    <div>
-      <select class="select select-bordered select-xs w-full" bind:value={selectedProvinceCode}>
+    <div class="flex flex-col gap-1">
+      <Label for="select-provinces">Provinces</Label>
+      <Select id="select-provinces" bind:value={selectedProvinceCode}>
         <option value="" disabled> Select... </option>
-
-        {#each provinces as region}<option value={region.code}>{region.name}</option>{/each}
-      </select>
+        <RegionSelectOptions regions={provinces} />
+      </Select>
     </div>
-    <div>
-      <select class="select select-bordered select-xs w-full" bind:value={selectedDistrictCode}>
+    <div class="flex flex-col gap-1">
+      <Label for="select-districts">Districts</Label>
+      <Select id="select-districts" bind:value={selectedDistrictCode}>
         <option value="" disabled> Select... </option>
-
-        {#each districts as region}<option value={region.code}>{region.name}</option>{/each}
-      </select>
+        <RegionSelectOptions regions={districts} />
+      </Select>
     </div>
-    <div>
-      <select class="select select-bordered select-xs w-full" bind:value={selectedSubdistrictsCode}>
+    <div class="flex flex-col gap-1">
+      <Label for="select-subdistricts">Subdistricts</Label>
+      <Select id="select-subdistricts" bind:value={selectedSubdistrictsCode}>
         <option value="" disabled> Select... </option>
-
-        {#each subdistricts as region}<option value={region.code}>{region.name}</option>{/each}
-      </select>
+        <RegionSelectOptions regions={subdistricts} />
+      </Select>
     </div>
-    <div>
-      <select class="select select-bordered select-xs w-full" bind:value={selectedVillageCode}>
+    <div class="flex flex-col gap-1">
+      <Label for="select-villages">Villages</Label>
+      <Select id="select-villages" bind:value={selectedVillageCode}>
         <option value="" disabled> Select... </option>
-
-        {#each villages as region}<option value={region.code}>{region.name}</option>{/each}
-      </select>
+        <RegionSelectOptions regions={villages} />
+      </Select>
     </div>
   </div>
 </div>

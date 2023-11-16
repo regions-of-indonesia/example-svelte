@@ -1,6 +1,6 @@
 # example-svelte
 
-Example Svelte Tailwind Daisy UI
+Example Svelte Tailwind
 
 <a title="github" href="https://github.com/regions-of-indonesia/example-svelte">
   <picture>
