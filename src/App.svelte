@@ -1,14 +1,22 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  import { create } from "@regions-of-indonesia/client";
+  import { create, cache } from "@regions-of-indonesia/client";
+  import { isRegionCode } from "@regions-of-indonesia/utils";
   import type { Region } from "@regions-of-indonesia/types";
 
   import Label from "./components/Label.svelte";
   import Select from "./components/Select.svelte";
   import RegionSelectOptions from "./components/RegionSelectOptions.svelte";
 
-  const client = create();
+  const client = create({
+    middlewares: [cache()],
+  });
+
+  const parseRegionCode = (value: unknown) => {
+    if (value && isRegionCode(value)) return value;
+    throw new Error("Invalid region code");
+  };
 
   let provinces: Region[] = [];
   let districts: Region[] = [];
@@ -24,6 +32,7 @@
     try {
       provinces = await client.province.find();
     } catch (error) {
+      console.error(error);
       provinces = [];
     }
   });
@@ -33,8 +42,9 @@
       selectedDistrictCode = "";
 
       try {
-        districts = await client.district.find(selectedProvinceCode);
+        districts = await client.district.find(parseRegionCode(selectedProvinceCode));
       } catch (error) {
+        console.error(error);
         districts = [];
       }
     };
@@ -47,8 +57,9 @@
       selectedSubdistrictsCode = "";
 
       try {
-        subdistricts = await client.subdistrict.find(selectedDistrictCode);
+        subdistricts = await client.subdistrict.find(parseRegionCode(selectedDistrictCode));
       } catch (error) {
+        console.error(error);
         subdistricts = [];
       }
     };
@@ -61,8 +72,9 @@
       selectedVillageCode = "";
 
       try {
-        villages = await client.village.find(selectedSubdistrictsCode);
+        villages = await client.village.find(parseRegionCode(selectedSubdistrictsCode));
       } catch (error) {
+        console.error(error);
         villages = [];
       }
     };
